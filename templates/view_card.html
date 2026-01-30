@@ -1,0 +1,442 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine World 💕</title>
+    <style>
+
+              body{
+    background:#f3e8ff;
+    text-align:center;
+    font-family: Arial;
+}
+.card{
+    background:white;
+    width:350px;
+    margin:100px auto;
+    padding:25px;
+    border-radius:25px;
+    box-shadow:0 0 10px pink;
+}
+      
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+     body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #fff0f7 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Hearts Background */
+        .hearts-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.1);
+            font-size: 20px;
+            animation: floatHearts 25s linear infinite;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced Header */
+        header {
+            background: linear-gradient(90deg, #ff6fae 0%, #ffafbd 50%, #ffc3a0 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 111, 174, 0.2);
+            position: relative;
+            z-index: 1000;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0,
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0);
+            background-size: 400% 400%;
+            animation: shimmer 8s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Logo Styling */
+ .logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(45deg, #fff, #ffebf0);
+    color: transparent;
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+}
+
+        /* Navigation Styling */
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        /* Active State for Current Page */
+        nav a[href*="{{ request.path }}"] {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Welcome Message for Authenticated Users */
+        .welcome-user {
+            background: linear-gradient(135deg, #fff, #fff9fb);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.15);
+            border: 2px solid #ffd1dc;
+            text-align: center;
+            display: none; /* Hidden by default, shown via JS if authenticated */
+        }
+
+        .welcome-user.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #ff8fab;
+            font-size: 14px;
+            border-top: 2px solid #ffd1dc;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .logo {
+                font-size: 24px;
+                padding: 8px 16px;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav a {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            
+            nav a {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+            
+            nav {
+                gap: 10px;
+            }
+        }
+
+        /* Animation for page transitions */
+        .content {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe4ec;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ff6fae, #ffafbd);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(#ff5ca0, #ff8fab);
+        }
+ 
+
+    </style>
+</head>
+<body>
+
+<!-- Animated Hearts Background -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<header>
+    <div class="logo">💖 Valentine World</div>
+    <nav>
+        <a href="/">🏠 Home</a>
+
+        {% if user.is_authenticated %}
+            <a href="/accounts/dashboard/">📊 Dashboard</a>
+            <a href="/cards/">💌 Create Card</a>
+            <a href="/accounts/logout/">👋 Logout</a>
+        {% else %}
+            <a href="/accounts/login/">🔑 Login</a>
+            <a href="/accounts/register/">✨ Register</a>
+        {% endif %}
+    </nav>
+</header>
+
+<div class="content">
+    <!-- Welcome Message (shown via JS if authenticated) -->
+    <!-- <div class="welcome-user" id="welcomeUser">
+        <h2>Welcome back, {{ user.username }}! 💕</h2>
+        <p>Spread love and happiness today! Create beautiful cards for your loved ones.</p>
+    </div> -->
+    
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<div class="card">
+<h2>💖 Happy Valentine's 💖</h2>
+
+<p><strong>From:</strong> {{ card.sender_name }}</p>
+<p><strong>To:</strong> {{ card.receiver_name }}</p>
+
+<hr>
+
+<p>{{ card.message }}</p>
+
+</div>
+
+<footer>
+    Made with 💖 for Valentine's Day | © 2024 Valentine World
+</footer>
+
+<script>
+    // Create animated floating hearts
+    document.addEventListener('DOMContentLoaded', function() {
+        const heartsBg = document.getElementById('heartsBg');
+        const heartCount = 25;
+        
+        for (let i = 0; i < heartCount; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤';
+            
+            // Random properties
+            const size = Math.random() * 25 + 15;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 20 + 20;
+            
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${left}%`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.animationDuration = `${duration}s`;
+            
+            heartsBg.appendChild(heart);
+        }
+        
+        // Show welcome message if user is authenticated
+        const welcomeUser = document.getElementById('welcomeUser');
+        const isAuthenticated = document.querySelector('nav a[href="/accounts/logout/"]') !== null;
+        
+        if (isAuthenticated && welcomeUser) {
+            setTimeout(() => {
+                welcomeUser.classList.add('show');
+            }, 500);
+        }
+        
+        // Add current page indicator
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname;
+            if (currentPath === linkPath || 
+                (currentPath === '/' && linkPath === '/') ||
+                (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                link.style.background = 'rgba(255, 255, 255, 0.4)';
+                link.style.boxShadow = '0 4px 15px rgba(255, 255, 255, 0.3)';
+                link.style.transform = 'scale(1.05)';
+            }
+        });
+        
+        // Add hover effect to logo
+        const logo = document.querySelector('.logo');
+        logo.addEventListener('mouseenter', () => {
+            logo.style.transform = 'scale(1.05)';
+            logo.style.transition = 'transform 0.3s ease';
+        });
+        
+        logo.addEventListener('mouseleave', () => {
+            logo.style.transform = 'scale(1)';
+        });
+        
+        // Add click animation to nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    });
+</script>
+</body>
+</html>

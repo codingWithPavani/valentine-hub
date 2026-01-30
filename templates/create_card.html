@@ -1,0 +1,51 @@
+<head>
+<title>Create Valentine Card</title>
+<style>
+body{
+    background:#ffe6f0;
+    font-family: Arial;
+    text-align:center;
+}
+.form-box{
+    background:rgb(191, 137, 164);
+    width:400px;
+    height: 400px;
+    margin:80px auto;
+    padding:30px;
+    border-radius:20px;
+}
+input, textarea{
+    width:90%;
+    padding:10px;
+    margin:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+button{
+    background:#ff9acb;
+    border:none;
+    padding:12px 20px;
+    border-radius:20px;
+}
+</style>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-box">
+<h2>💌 Create Your Valentine Card</h2>
+
+<form method="POST">
+{% csrf_token %}
+<input type="text" name="sender" placeholder="Your Name" required>
+<input type="text" name="receiver" placeholder="Valentine's Name" required>
+
+<textarea name="message" placeholder="Write your love message ❤️" required></textarea>
+
+<button>Create Card 💖</button>
+</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,786 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine World 💕</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #fff0f7 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Hearts Background */
+        .hearts-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.1);
+            font-size: 20px;
+            animation: floatHearts 25s linear infinite;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced Header */
+        header {
+            background: linear-gradient(90deg, #ff6fae 0%, #ffafbd 50%, #ffc3a0 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 111, 174, 0.2);
+            position: relative;
+            z-index: 1000;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0,
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0);
+            background-size: 400% 400%;
+            animation: shimmer 8s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Logo Styling */
+ .logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(45deg, #fff, #ffebf0);
+    color: transparent;
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+}
+
+        /* Navigation Styling */
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        /* Active State for Current Page */
+        nav a[href*="{{ request.path }}"] {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Welcome Message for Authenticated Users */
+        .welcome-user {
+            background: linear-gradient(135deg, #fff, #fff9fb);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.15);
+            border: 2px solid #ffd1dc;
+            text-align: center;
+            display: none; /* Hidden by default, shown via JS if authenticated */
+        }
+
+        .welcome-user.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #ff8fab;
+            font-size: 14px;
+            border-top: 2px solid #ffd1dc;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .logo {
+                font-size: 24px;
+                padding: 8px 16px;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav a {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            
+            nav a {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+            
+            nav {
+                gap: 10px;
+            }
+        }
+
+        /* Animation for page transitions */
+        .content {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe4ec;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ff6fae, #ffafbd);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(#ff5ca0, #ff8fab);
+        }
+ 
+
+
+
+        /* Message Generator Styles */
+    .message-generator-section {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .generator-container {
+        background: white;
+        border-radius: 25px;
+        padding: 50px;
+        box-shadow: 
+            0 25px 50px rgba(255, 111, 174, 0.2),
+            0 0 0 3px white,
+            inset 0 0 30px rgba(255, 182, 193, 0.1);
+        border: 3px solid #ffd1dc;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .generator-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #ff6fae, #ffafbd, #ffc3a0);
+        background-size: 200% 100%;
+        animation: shimmer 3s infinite linear;
+    }
+    
+    .generator-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .generator-title {
+        color: #ff6fae;
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+        position: relative;
+        display: inline-block;
+    }
+    
+    .generator-title::before,
+    .generator-title::after {
+        content: '✨';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        animation: sparkle 2s infinite;
+    }
+    
+    .generator-title::before {
+        left: -50px;
+    }
+    
+    .generator-title::after {
+        right: -50px;
+    }
+    
+    @keyframes sparkle {
+        0%, 100% { opacity: 0.7; transform: translateY(-50%) scale(1); }
+        50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+    }
+    
+    .generator-subtitle {
+        color: #ff8fab;
+        font-size: 1.2rem;
+        font-style: italic;
+    }
+    
+    /* Message Display */
+    .message-display {
+        background: linear-gradient(135deg, #fff0f7 0%, #ffeaf2 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 40px;
+        border: 3px solid #ffafbd;
+        position: relative;
+        min-height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 20px rgba(255, 182, 193, 0.2);
+    }
+    
+    .message-display::before {
+        content: '❝';
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 50px;
+        color: #ffb6c1;
+        opacity: 0.3;
+    }
+    
+    .message-display::after {
+        content: '❞';
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        font-size: 50px;
+        color: #ffb6c1;
+        opacity: 0.3;
+    }
+    
+    .message-content {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .message-text {
+        font-size: 1.8rem;
+        color: #5a3d5c;
+        line-height: 1.6;
+        font-style: italic;
+        margin: 0;
+        padding: 20px;
+        font-weight: 500;
+    }
+    
+    .message-text::first-letter {
+        font-size: 2.5rem;
+        color: #ff6fae;
+        font-weight: bold;
+    }
+    
+    .message-decoration {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 30px;
+        color: #ff6fae;
+        opacity: 0.3;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    /* Button */
+    .button-container {
+        text-align: center;
+    }
+    
+    .generate-button {
+        background: linear-gradient(135deg, #ff6fae 0%, #ff8fab 100%);
+        border: none;
+        padding: 20px 45px;
+        border-radius: 22px;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 12px 30px rgba(255, 111, 174, 0.4),
+            0 0 0 3px white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .generate-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: 0.5s;
+    }
+    
+    .generate-button:hover {
+        background: linear-gradient(135deg, #ff5ca0 0%, #ff7a9e 100%);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 20px 40px rgba(255, 111, 174, 0.5),
+            0 0 0 3px white;
+    }
+    
+    .generate-button:hover::before {
+        left: 100%;
+    }
+    
+    .generate-button:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .button-icon {
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .generate-button:hover .button-icon {
+        transform: rotate(180deg);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .message-generator-section {
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        
+        .generator-container {
+            padding: 40px 30px;
+        }
+        
+        .generator-title {
+            font-size: 2.2rem;
+        }
+        
+        .generator-title::before,
+        .generator-title::after {
+            display: none;
+        }
+        
+        .message-text {
+            font-size: 1.5rem;
+        }
+        
+        .message-display {
+            padding: 30px 25px;
+        }
+        
+        .generate-button {
+            padding: 18px 35px;
+            font-size: 1.2rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .generator-container {
+            padding: 30px 20px;
+        }
+        
+        .generator-title {
+            font-size: 1.9rem;
+        }
+        
+        .message-text {
+            font-size: 1.3rem;
+            padding: 15px;
+        }
+        
+        .message-display {
+            padding: 25px 20px;
+        }
+        
+        .message-display::before,
+        .message-display::after {
+            font-size: 40px;
+        }
+        
+        .generate-button {
+            padding: 16px 30px;
+            font-size: 1.1rem;
+        }
+    }
+
+
+
+
+    </style>
+</head>
+<body>
+
+<!-- Animated Hearts Background -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<header>
+    <div class="logo">💖 Valentine World</div>
+    <nav>
+        <a href="/">🏠 Home</a>
+
+        {% if user.is_authenticated %}
+            <!-- <a href="/accounts/dashboard/">📊 Dashboard</a>
+            <a href="/cards/">💌 Create Card</a>
+            <a href="/accounts/logout/">👋 Logout</a> -->
+            <a href="/funzone/love-calculator/">😊Love Calculator</a>
+             <a href="/funzone/message-generator/">💬Sweet Message</a>
+             <a href="/funzone/game/">❤️Game</a>
+             <a href="/accounts/logout/">👋 Logout</a> 
+
+        {% else %}
+            <a href="/accounts/login/">🔑 Login</a>
+            <a href="/accounts/Register/">✨ Register</a>
+        {% endif %}
+    </nav>
+</header>
+
+<div class="content">
+    <!-- Welcome Message (shown via JS if authenticated) -->
+    <!-- <div class="welcome-user" id="welcomeUser">
+        <h2>Welcome back, {{ user.username }}! 💕</h2>
+        <p>Spread love and happiness today! Create beautiful cards for your loved ones.</p>
+    </div> -->
+    
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<!-- <h2>💌 Sweet Message Generator</h2>
+
+<p style="font-size:20px;">{{ message }}</p>
+
+<button onclick="location.reload()">Generate Again 🔄</button> -->
+
+
+<!-- Enhanced Message Generator Section -->
+<div class="message-generator-section">
+    <div class="generator-container">
+        <!-- Header -->
+        <div class="generator-header">
+            <h2 class="generator-title">💌 Sweet Message Generator</h2>
+            <p class="generator-subtitle">Get romantic messages to share with your loved ones! 💘</p>
+        </div>
+        
+        <!-- Message Display -->
+        <div class="message-display">
+            <div class="message-content">
+                {% if message %}
+                <p class="message-text">{{ message }}</p>
+                {% else %}
+                <p class="message-text">Click the button below to generate a sweet message! 💕</p>
+                {% endif %}
+            </div>
+            <div class="message-decoration">💖</div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="button-container">
+            <button class="generate-button" onclick="location.reload()">
+                <span class="button-text">Generate Again</span>
+                <span class="button-icon">🔄</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<footer>
+    Made with 💖 for Valentine's Day | © 2024 Valentine World
+</footer>
+
+<script>
+    // Create animated floating hearts
+    document.addEventListener('DOMContentLoaded', function() {
+        const heartsBg = document.getElementById('heartsBg');
+        const heartCount = 25;
+        
+        for (let i = 0; i < heartCount; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤';
+            
+            // Random properties
+            const size = Math.random() * 25 + 15;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 20 + 20;
+            
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${left}%`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.animationDuration = `${duration}s`;
+            
+            heartsBg.appendChild(heart);
+        }
+        
+        // Show welcome message if user is authenticated
+        const welcomeUser = document.getElementById('welcomeUser');
+        const isAuthenticated = document.querySelector('nav a[href="/accounts/logout/"]') !== null;
+        
+        if (isAuthenticated && welcomeUser) {
+            setTimeout(() => {
+                welcomeUser.classList.add('show');
+            }, 500);
+        }
+        
+        // Add current page indicator
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname;
+            if (currentPath === linkPath || 
+                (currentPath === '/' && linkPath === '/') ||
+                (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                link.style.background = 'rgba(255, 255, 255, 0.4)';
+                link.style.boxShadow = '0 4px 15px rgba(255, 255, 255, 0.3)';
+                link.style.transform = 'scale(1.05)';
+            }
+        });
+        
+        // Add hover effect to logo
+        const logo = document.querySelector('.logo');
+        logo.addEventListener('mouseenter', () => {
+            logo.style.transform = 'scale(1.05)';
+            logo.style.transition = 'transform 0.3s ease';
+        });
+        
+        logo.addEventListener('mouseleave', () => {
+            logo.style.transform = 'scale(1)';
+        });
+        
+        // Add click animation to nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+    // Add animation to message display
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageText = document.querySelector('.message-text');
+        if (messageText) {
+            // Animate message appearance
+            messageText.style.opacity = '0';
+            messageText.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                messageText.style.transition = 'all 0.8s ease';
+                messageText.style.opacity = '1';
+                messageText.style.transform = 'translateY(0)';
+            }, 300);
+        }
+        
+        // Add click effect to button
+        const generateButton = document.querySelector('.generate-button');
+        if (generateButton) {
+            generateButton.addEventListener('click', function() {
+                // Add celebration hearts
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.innerHTML = '💖';
+                        heart.style.position = 'fixed';
+                        heart.style.color = '#ff6fae';
+                        heart.style.fontSize = '24px';
+                        heart.style.pointerEvents = 'none';
+                        heart.style.zIndex = '9999';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.top = '60vh';
+                        heart.style.opacity = '0.8';
+                        document.body.appendChild(heart);
+                        
+                        heart.style.transition = 'all 1.5s ease-out';
+                        setTimeout(() => {
+                            heart.style.top = '-50px';
+                            heart.style.opacity = '0';
+                            
+                            setTimeout(() => {
+                                if (heart.parentNode) {
+                                    heart.parentNode.removeChild(heart);
+                                }
+                            }, 1500);
+                        }, 10);
+                    }, i * 200);
+                }
+                
+                // Button press animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        }
+    });
+</script>
+</body>
+</html>

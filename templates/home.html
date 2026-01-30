@@ -1,0 +1,59 @@
+
+<head>
+    <title>Pastel Valentine Hub</title>
+    <style>
+        body{
+            background: linear-gradient(#ffd6e8, #e7d7ff);
+            font-family: Arial;
+            text-align:center;
+        }
+        .box{
+            margin-top:100px;
+        }
+        button{
+            background:#ff9acb;
+            border:none;
+            padding:15px 25px;
+            border-radius:20px;
+            margin:10px;
+            font-size:18px;
+            cursor:pointer;
+        }
+        button:hover{
+            background:#ff7bb5;
+        }
+
+        #musicBtn{
+    position:fixed;
+    top:15px;
+    right:15px;
+    border:none;
+    background:#ff9acb;
+    padding:10px 14px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+    </style>
+</head>
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="box">
+    <h1>💖 Welcome to Pastel Valentine Hub 💖</h1>
+    <p>Spread love in a cute & fun way!</p>
+
+    <button onclick="location.href='/cards/'">Create Card 💌</button>
+    <button onclick="location.href='/funzone/'">Fun Zone 😂</button>
+    <button onclick="location.href='/memory/'">Memory Wall ❤️</button>
+    <button onclick="location.href='/confessions/'">Confessions 💬</button>
+</div>
+
+
+
+{% endblock %}
+

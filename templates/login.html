@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Login 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Heart decorations */
+        .heart {
+            position: absolute;
+            background-color: #ff6fae;
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            transform: rotate(-45deg);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .heart:before, .heart:after {
+            content: "";
+            background-color: #ff6fae;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            left: 10px;
+            top: 0;
+        }
+        
+        /* Different sizes and colors for hearts */
+        .heart-small {
+            height: 15px;
+            width: 15px;
+            animation-delay: 1s;
+            background-color: #ffafbd;
+        }
+        
+        .heart-small:before, .heart-small:after {
+            height: 15px;
+            width: 15px;
+            background-color: #ffafbd;
+        }
+        
+        .heart-medium {
+            height: 25px;
+            width: 25px;
+            animation-delay: 2s;
+            background-color: #ff8fab;
+        }
+        
+        .heart-medium:before, .heart-medium:after {
+            height: 25px;
+            width: 25px;
+            background-color: #ff8fab;
+        }
+        
+        /* Position hearts randomly */
+        .heart:nth-child(1) { top: 10%; left: 5%; }
+        .heart:nth-child(2) { top: 20%; right: 8%; }
+        .heart:nth-child(3) { bottom: 15%; left: 10%; }
+        .heart:nth-child(4) { bottom: 25%; right: 5%; }
+        .heart:nth-child(5) { top: 40%; left: 15%; }
+        .heart:nth-child(6) { top: 60%; right: 12%; }
+        .heart:nth-child(7) { bottom: 40%; left: 8%; }
+        .heart:nth-child(8) { bottom: 60%; right: 15%; }
+        
+        @keyframes float {
+            0%, 100% { transform: rotate(-45deg) translateY(0); }
+            50% { transform: rotate(-45deg) translateY(-15px); }
+        }
+        
+        /* Main container */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border: 2px solid #ffafbd;
+            overflow: hidden;
+        }
+        
+        /* Header styles */
+        .login-header h2 {
+            color: #ff6fae;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+        
+        /* Form styles */
+        form {
+            margin-top: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #ff6fae;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ffd1dc;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff6fae;
+            box-shadow: 0 0 0 3px rgba(255, 111, 174, 0.2);
+        }
+        
+        .input-group input::placeholder {
+            color: #bbb;
+        }
+        
+        /* Button styles */
+        button {
+            background: linear-gradient(to right, #ff6fae, #ff8fab);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 111, 174, 0.4);
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #ff5ca0, #ff7a9e);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 111, 174, 0.5);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        /* Link styles */
+        .register-link {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ffd1dc;
+            color: #666;
+        }
+        
+        .register-link a {
+            color: #ff6fae;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .register-link a:hover {
+            color: #ff4d94;
+            text-decoration: underline;
+        }
+        
+        /* Decorative elements inside container */
+        .heart-decoration {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff6fae;
+            transform: rotate(45deg);
+            border-radius: 10px;
+            z-index: -1;
+        }
+        
+        .heart-decoration:before, .heart-decoration:after {
+            content: "";
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #ff6fae;
+            border-radius: 50%;
+        }
+        
+        .heart-decoration:before {
+            top: -30px;
+            left: 0;
+        }
+        
+        .heart-decoration:after {
+            top: 0;
+            left: 30px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Error message styling (optional, if you have error messages) */
+        .error-message {
+            background-color: rgba(255, 111, 174, 0.1);
+            color: #ff6fae;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts decoration -->
+    <div class="heart heart-small"></div>
+    <div class="heart"></div>
+    <div class="heart heart-medium"></div>
+    <div class="heart heart-small"></div>
+    <div class="heart"></div>
+    <div class="heart heart-medium"></div>
+    <div class="heart"></div>
+    <div class="heart heart-small"></div>
+    
+    <div class="login-container">
+        <!-- Decorative heart in corner -->
+        <div class="heart-decoration"></div>
+        
+        <div class="login-header">
+            <h2>Login 💖</h2>
+            <p>Welcome back to your Valentine's space</p>
+        </div>
+        
+        <!-- Your existing form - no logic changed -->
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input name="username" id="username" placeholder="Enter your username">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password">
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+        
+        <div class="register-link">
+            <p>
+                💕 New here? 
+                <a href="/accounts/register/" style="color:#ff6fae; text-decoration:none;">
+                    Create account
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add a little interactive effect when hovering over the login button
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginButton = document.querySelector('button');
+            
+            if (loginButton) {
+                loginButton.addEventListener('mouseenter', function() {
+                    // Create a small heart animation on hover
+                    const heart = document.createElement('div');
+                    heart.className = 'heart heart-small';
+                    heart.style.position = 'absolute';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '100vh';
+                    heart.style.zIndex = '1';
+                    document.body.appendChild(heart);
+                    
+                    // Animate the heart
+                    setTimeout(() => {
+                        heart.style.transition = 'all 2s ease-out';
+                        heart.style.top = '-20px';
+                        heart.style.opacity = '0';
+                        
+                        // Remove after animation
+                        setTimeout(() => {
+                            if (heart.parentNode) {
+                                heart.parentNode.removeChild(heart);
+                            }
+                        }, 2000);
+                    }, 10);
+                });
+            }
+            
+            // Add a subtle pulsing effect to the login container
+            const container = document.querySelector('.login-container');
+            let pulseState = 0;
+            
+            function pulseContainer() {
+                if (pulseState === 0) {
+                    container.style.boxShadow = '0 15px 35px rgba(255, 111, 174, 0.3)';
+                    pulseState = 1;
+                } else {
+                    container.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                    pulseState = 0;
+                }
+            }
+            
+            // Pulse every 3 seconds
+            setInterval(pulseContainer, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catch The Hearts 💘 - Valentine Game</title>
+<style>
+    /* Base Styles */
+ 
+ .logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(45deg, #fff, #ffebf0);
+    color: transparent;
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+}
+  .hearts-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+       @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+             /* Enhanced Header */
+        header {
+            background: linear-gradient(90deg, #ff6fae 0%, #ffafbd 50%, #ffc3a0 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 111, 174, 0.2);
+            position: relative;
+            z-index: 1000;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+               header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0,
+                #ff6fae, #ff8fab, #ffafbd, #ffc3a0);
+            background-size: 400% 400%;
+            animation: shimmer 8s ease infinite;
+        }  
+    
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+      /* Logo Styling */
+ .logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(45deg, #fff, #ffebf0);
+    color: transparent;
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+}
+      /* Navigation Styling */
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        /* Active State for Current Page */
+        nav a[href*="{{ request.path }}"] {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Welcome Message for Authenticated Users */
+        .welcome-user {
+            background: linear-gradient(135deg, #fff, #fff9fb);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.15);
+            border: 2px solid #ffd1dc;
+            text-align: center;
+            display: none; /* Hidden by default, shown via JS if authenticated */
+        }
+
+        .welcome-user.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .logo {
+                font-size: 24px;
+                padding: 8px 16px;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav a {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            
+            nav a {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+            
+            nav {
+                gap: 10px;
+            }
+        }
+
+        /* Animation for page transitions */
+        .content {
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe4ec;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#ff6fae, #ffafbd);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(#ff5ca0, #ff8fab);
+        }
+ 
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        user-select: none;
+    }
+    
+    body {
+        background: linear-gradient(135deg, #ffe6f0 0%, #fff0fa 50%, #e6f0ff 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+        position: relative;
+    }
+
+    /* Animated Background Hearts */
+    .bg-hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .bg-heart {
+        position: absolute;
+        color: rgba(255, 182, 193, 0.15);
+        font-size: 25px;
+        animation: floatBg 25s linear infinite;
+    }
+
+    @keyframes floatBg {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.15;
+        }
+        90% {
+            opacity: 0.15;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Game Container */
+    .game-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+
+    /* Game Header */
+    .game-header {
+        background: linear-gradient(135deg, #ff6fae 0%, #ffafbd 100%);
+        padding: 25px;
+        border-radius: 25px;
+        margin-bottom: 30px;
+        box-shadow: 
+            0 15px 35px rgba(255, 111, 174, 0.3),
+            0 0 0 3px white,
+            inset 0 0 20px rgba(255, 255, 255, 0.4);
+        border: 3px solid #ffd1dc;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .game-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ff6fae, #ffafbd, #ffc3a0);
+        background-size: 200% 100%;
+        animation: shimmer 3s infinite linear;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200px 0; }
+        100% { background-position: 200px 0; }
+    }
+
+    h1 {
+        color: white;
+        font-size: 3.2rem;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .game-subtitle {
+        color: white;
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-style: italic;
+    }
+
+    /* Score Board */
+    .score-board {
+        background: white;
+        padding: 20px 40px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(255, 111, 174, 0.2);
+        border: 3px solid #ffd1dc;
+        position: relative;
+    }
+
+    .score-board::before {
+        content: '🏆';
+        position: absolute;
+        left: -25px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px;
+        background: white;
+        padding: 10px;
+        border-radius: 50%;
+        border: 3px solid #ffd1dc;
+        box-shadow: 0 5px 15px rgba(255, 111, 174, 0.2);
+    }
+
+    .score-board::after {
+        content: '✨';
+        position: absolute;
+        right: -25px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px;
+        background: white;
+        padding: 10px;
+        border-radius: 50%;
+        border: 3px solid #ffd1dc;
+        box-shadow: 0 5px 15px rgba(255, 111, 174, 0.2);
+    }
+
+    #score {
+        font-size: 2.8rem;
+        font-weight: bold;
+        color: #ff6fae;
+        text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+    }
+
+    .score-label {
+        font-size: 1.2rem;
+        color: #ff8fab;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Game Stats */
+    .game-stats {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 25px;
+        border-radius: 15px;
+        border: 2px solid #ffd1dc;
+        box-shadow: 0 5px 15px rgba(255, 111, 174, 0.15);
+    }
+
+    .stat-label {
+        color: #ff8fab;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .stat-value {
+        color: #ff6fae;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    /* Falling Hearts */
+    .heart {
+        position: absolute;
+        font-size: 45px;
+        cursor: pointer;
+        user-select: none;
+        z-index: 2;
+        transition: transform 0.1s ease, opacity 0.3s ease;
+        text-shadow: 2px 2px 10px rgba(255, 111, 174, 0.5);
+        filter: drop-shadow(0 0 8px rgba(255, 111, 174, 0.4));
+    }
+
+    .heart:hover {
+        transform: scale(1.1);
+    }
+
+    /* Special Hearts */
+    .heart.golden {
+        color: #FFD700;
+        text-shadow: 0 0 15px gold;
+        animation: glow 1s infinite alternate;
+    }
+
+    .heart.silver {
+        color: #C0C0C0;
+        text-shadow: 0 0 15px silver;
+    }
+
+    .heart.diamond {
+        color: #B9F2FF;
+        text-shadow: 0 0 15px #B9F2FF;
+        animation: rainbow 2s infinite linear;
+    }
+
+    @keyframes glow {
+        from { filter: drop-shadow(0 0 5px gold); }
+        to { filter: drop-shadow(0 0 20px gold); }
+    }
+
+    @keyframes rainbow {
+        0% { color: #FF6F61; }
+        25% { color: #6B5B95; }
+        50% { color: #88B04B; }
+        75% { color: #FFA500; }
+        100% { color: #FF6F61; }
+    }
+
+    /* Game Instructions */
+    .instructions {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 30px;
+        border: 2px dashed #ffd1dc;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .instructions h3 {
+        color: #ff6fae;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .instructions ul {
+        list-style: none;
+        text-align: left;
+        padding: 0 20px;
+    }
+
+    .instructions li {
+        color: #7a5c7c;
+        margin-bottom: 8px;
+        padding-left: 25px;
+        position: relative;
+    }
+
+    .instructions li::before {
+        content: '💖';
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    /* Game Over Screen */
+    .game-over {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .game-over-content {
+        background: linear-gradient(135deg, #fff, #fff9fb);
+        padding: 50px;
+        border-radius: 30px;
+        text-align: center;
+        border: 3px solid #ffd1dc;
+        box-shadow: 0 20px 50px rgba(255, 111, 174, 0.5);
+        max-width: 500px;
+        width: 90%;
+    }
+
+    .game-over h2 {
+        color: #ff6fae;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .restart-btn {
+        background: linear-gradient(135deg, #ff6fae 0%, #ff8fab 100%);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 20px;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(255, 111, 174, 0.3);
+    }
+
+    .restart-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(255, 111, 174, 0.4);
+    }
+
+    /* Timer Bar */
+    .timer-bar {
+        width: 80%;
+        height: 15px;
+        background: #ffe4ec;
+        border-radius: 10px;
+        margin: 20px auto 30px;
+        overflow: hidden;
+        border: 2px solid #ffd1dc;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .timer-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff6fae, #ffafbd);
+        border-radius: 10px;
+        width: 100%;
+        transition: width 0.1s linear;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5rem;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .game-header {
+            padding: 20px;
+        }
+        
+        .score-board {
+            padding: 15px 30px;
+        }
+        
+        #score {
+            font-size: 2.2rem;
+        }
+        
+        .heart {
+            font-size: 35px;
+        }
+        
+        .game-stats {
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .game-header {
+            padding: 15px;
+        }
+        
+        .score-board {
+            padding: 12px 25px;
+        }
+        
+        #score {
+            font-size: 1.8rem;
+        }
+        
+        .heart {
+            font-size: 30px;
+        }
+    }
+
+    /* Celebration Animation */
+    .celebration {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 999;
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="hearts-bg" id="heartsBg"></div>
+
+<header>
+    <div class="logo">💖 Valentine World</div>
+    <nav>
+        <a href="/">🏠 Home</a>
+
+        {% if user.is_authenticated %}
+            <!-- <a href="/accounts/dashboard/">📊 Dashboard</a>
+            <a href="/cards/">💌 Create Card</a>
+            <a href="/accounts/logout/">👋 Logout</a> -->
+            
+            <a href="/funzone/love-calculator/">😊Love Calculator</a>
+             <a href="/funzone/message-generator/">💬Sweet Message</a>
+             <a href="/funzone/game/">❤️Game</a>
+               <a href="/accounts/logout/">👋 Logout</a> 
+
+        {% else %}
+            <a href="/accounts/login/">🔑 Login</a>
+            <a href="/accounts/register/">✨ Register</a>
+        {% endif %}
+    </nav>
+</header>
+    <!-- Background Hearts -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <h1>
+                <span>💘</span>
+                Catch The Hearts
+                <span>💘</span>
+            </h1>
+            <p class="game-subtitle">Click the falling hearts before they disappear! 💖</p>
+        </div>
+
+        <!-- Timer Bar -->
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill"></div>
+        </div>
+
+        <!-- Score Board -->
+        <div class="score-board">
+            <div class="score-label">SCORE</div>
+            <div id="score">0</div>
+        </div>
+
+        <!-- Game Stats -->
+        <div class="game-stats">
+            <div class="stat-box">
+                <div class="stat-label">HEARTS CAUGHT</div>
+                <div class="stat-value" id="heartsCaught">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">TIME LEFT</div>
+                <div class="stat-value" id="timeLeft">60s</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">HIGH SCORE</div>
+                <div class="stat-value" id="highScore">0</div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>📋 How to Play</h3>
+            <ul>
+                <li>Click on falling hearts to catch them</li>
+                <li>Golden hearts give +3 points ⭐</li>
+                <li>Silver hearts give +2 points ✨</li>
+                <li>Regular hearts give +1 point 💖</li>
+                <li>Game lasts 60 seconds ⏱️</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="game-over" id="gameOver">
+        <div class="game-over-content">
+            <h2>🎮 Game Over! 🎮</h2>
+            <div class="final-score" id="finalScore">Score: 0</div>
+            <div class="high-score" id="finalHighScore">High Score: 0</div>
+            <button class="restart-btn" onclick="restartGame()">Play Again 🔄</button>
+        </div>
+    </div>
+
+    <!-- Celebration Animation Container -->
+    <div class="celebration" id="celebration"></div>
+
+    <footer>
+    Made with 💖 for Valentine's Day | © 2024 Valentine World
+</footer>
+
+<script>
+// Game Variables
+let score = 0;
+let heartsCaught = 0;
+let timeLeft = 60;
+let gameActive = true;
+let highScore = localStorage.getItem('heartGameHighScore') || 0;
+let heartTypes = ['❤️', '💖', '💕', '💗', '💓', '💝'];
+let specialHeartTypes = ['💛', '🤍', '💎']; // Golden, Silver, Diamond
+
+// DOM Elements
+const scoreElement = document.getElementById('score');
+const heartsCaughtElement = document.getElementById('heartsCaught');
+const timeLeftElement = document.getElementById('timeLeft');
+const highScoreElement = document.getElementById('highScore');
+const timerFillElement = document.getElementById('timerFill');
+const gameOverElement = document.getElementById('gameOver');
+const finalScoreElement = document.getElementById('finalScore');
+const finalHighScoreElement = document.getElementById('finalHighScore');
+const celebrationElement = document.getElementById('celebration');
+
+// Initialize game
+function initGame() {
+    score = 0;
+    heartsCaught = 0;
+    timeLeft = 60;
+    gameActive = true;
+    
+    // Display high score
+    highScoreElement.textContent = highScore;
+    
+    // Create background hearts
+    createBackgroundHearts();
+    
+    // Start game loop
+    startGame();
+}
+
+// Create background hearts
+function createBackgroundHearts() {
+    const bgHearts = document.getElementById('bgHearts');
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'bg-heart';
+        heart.innerHTML = '❤';
+        
+        const size = Math.random() * 25 + 15;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 20 + 20;
+        
+        heart.style.fontSize = `${size}px`;
+        heart.style.left = `${left}%`;
+        heart.style.animationDelay = `${delay}s`;
+        heart.style.animationDuration = `${duration}s`;
+        
+        bgHearts.appendChild(heart);
+    }
+}
+
+// Start game
+function startGame() {
+    // Create first heart
+    createHeart();
+    
+    // Start timer
+    const timer = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            timeLeftElement.textContent = `${timeLeft}s`;
+            timerFillElement.style.width = `${(timeLeft / 60) * 100}%`;
+        } else {
+            clearInterval(timer);
+            endGame();
+        }
+    }, 1000);
+    
+    // Heart creation interval
+    setInterval(() => {
+        if (gameActive) {
+            createHeart();
+        }
+    }, 700);
+    
+    // Random special heart creation
+    setInterval(() => {
+        if (gameActive && Math.random() > 0.7) {
+            createSpecialHeart();
+        }
+    }, 2000);
+}
+
+// Create regular heart
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+    
+    // Random position
+    heart.style.left = Math.random() * (window.innerWidth - 60) + "px";
+    heart.style.top = "-60px";
+    
+    // Random size
+    const size = Math.random() * 20 + 40;
+    heart.style.fontSize = `${size}px`;
+    
+    document.body.appendChild(heart);
+    
+    // Falling animation
+    let position = -60;
+    let speed = 2 + Math.random() * 4;
+    
+    const fallInterval = setInterval(() => {
+        if (!gameActive) {
+            clearInterval(fallInterval);
+            heart.remove();
+            return;
+        }
+        
+        position += speed;
+        heart.style.top = position + "px";
+        
+        if (position > window.innerHeight) {
+            clearInterval(fallInterval);
+            heart.remove();
+        }
+    }, 20);
+    
+    // Click event
+    heart.onclick = () => {
+        if (!gameActive) return;
+        
+        score += 1;
+        heartsCaught += 1;
+        updateScore();
+        createClickEffect(heart);
+        
+        clearInterval(fallInterval);
+        heart.style.opacity = "0";
+        heart.style.transform = "scale(1.5)";
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 300);
+    };
+}
+
+// Create special heart
+function createSpecialHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    
+    const specialTypeIndex = Math.floor(Math.random() * specialHeartTypes.length);
+    heart.innerHTML = specialHeartTypes[specialTypeIndex];
+    
+    // Add special class
+    if (specialTypeIndex === 0) heart.classList.add("golden");
+    else if (specialTypeIndex === 1) heart.classList.add("silver");
+    else heart.classList.add("diamond");
+    
+    // Random position
+    heart.style.left = Math.random() * (window.innerWidth - 80) + "px";
+    heart.style.top = "-80px";
+    
+    // Larger size for special hearts
+    heart.style.fontSize = "60px";
+    
+    document.body.appendChild(heart);
+    
+    // Falling animation with wobble effect
+    let position = -80;
+    let speed = 3 + Math.random() * 3;
+    let wobble = 0;
+    let wobbleSpeed = 0.05;
+    let wobbleAmount = 30;
+    
+    const fallInterval = setInterval(() => {
+        if (!gameActive) {
+            clearInterval(fallInterval);
+            heart.remove();
+            return;
+        }
+        
+        position += speed;
+        wobble += wobbleSpeed;
+        
+        const wobbleX = Math.sin(wobble) * wobbleAmount;
+        heart.style.left = (parseFloat(heart.style.left) + wobbleX) + "px";
+        heart.style.top = position + "px";
+        
+        if (position > window.innerHeight) {
+            clearInterval(fallInterval);
+            heart.remove();
+        }
+    }, 20);
+    
+    // Click event for special heart
+    heart.onclick = () => {
+        if (!gameActive) return;
+        
+        let points = 1;
+        if (specialTypeIndex === 0) points = 3; // Golden
+        else if (specialTypeIndex === 1) points = 2; // Silver
+        else points = 5; // Diamond
+        
+        score += points;
+        heartsCaught += 1;
+        updateScore();
+        createSpecialClickEffect(heart, points);
+        
+        clearInterval(fallInterval);
+        heart.style.opacity = "0";
+        heart.style.transform = "scale(2)";
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 300);
+    };
+}
+
+// Update score display
+function updateScore() {
+    scoreElement.textContent = score;
+    heartsCaughtElement.textContent = heartsCaught;
+    
+    // Update high score if needed
+    if (score > highScore) {
+        highScore = score;
+        highScoreElement.textContent = highScore;
+        localStorage.setItem('heartGameHighScore', highScore);
+        
+        // Celebrate new high score
+        if (score > 0) {
+            celebrate();
+        }
+    }
+}
+
+// Create click effect
+function createClickEffect(element) {
+    const effect = document.createElement("div");
+    effect.innerHTML = "+1";
+    effect.style.position = "absolute";
+    effect.style.left = element.style.left;
+    effect.style.top = element.style.top;
+    effect.style.color = "#ff6fae";
+    effect.style.fontSize = "30px";
+    effect.style.fontWeight = "bold";
+    effect.style.pointerEvents = "none";
+    effect.style.zIndex = "100";
+    effect.style.transition = "all 0.5s ease";
+    
+    document.body.appendChild(effect);
+    
+    // Animate effect
+    setTimeout(() => {
+        effect.style.transform = "translateY(-30px)";
+        effect.style.opacity = "0";
+        
+        setTimeout(() => {
+            if (effect.parentNode) {
+                effect.parentNode.removeChild(effect);
+            }
+        }, 500);
+    }, 10);
+}
+
+// Create special click effect
+function createSpecialClickEffect(element, points) {
+    const effect = document.createElement("div");
+    effect.innerHTML = `+${points} ⭐`;
+    effect.style.position = "absolute";
+    effect.style.left = element.style.left;
+    effect.style.top = element.style.top;
+    effect.style.color = points === 3 ? "gold" : points === 2 ? "silver" : "#B9F2FF";
+    effect.style.fontSize = "35px";
+    effect.style.fontWeight = "bold";
+    effect.style.pointerEvents = "none";
+    effect.style.zIndex = "100";
+    effect.style.textShadow = "0 0 10px currentColor";
+    effect.style.transition = "all 0.5s ease";
+    
+    document.body.appendChild(effect);
+    
+    // Animate effect
+    setTimeout(() => {
+        effect.style.transform = "translateY(-40px) scale(1.2)";
+        effect.style.opacity = "0";
+        
+        setTimeout(() => {
+            if (effect.parentNode) {
+                effect.parentNode.removeChild(effect);
+            }
+        }, 500);
+    }, 10);
+}
+
+// Celebrate achievement
+function celebrate() {
+    celebrationElement.style.display = "block";
+    
+    // Create celebration hearts
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.innerHTML = "💖";
+            heart.style.position = "fixed";
+            heart.style.fontSize = "40px";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            heart.style.zIndex = "1000";
+            heart.style.pointerEvents = "none";
+            heart.style.transition = "all 1s ease-out";
+            
+            celebrationElement.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.style.top = "-100px";
+                heart.style.transform = "rotate(360deg)";
+                heart.style.opacity = "0";
+                
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 1000);
+            }, 10);
+        }, i * 100);
+    }
+    
+    setTimeout(() => {
+        celebrationElement.style.display = "none";
+        celebrationElement.innerHTML = "";
+    }, 2000);
+}
+
+// End game
+function endGame() {
+    gameActive = false;
+    
+    // Remove all hearts
+    const hearts = document.querySelectorAll(".heart");
+    hearts.forEach(heart => heart.remove());
+    
+    // Show game over screen
+    setTimeout(() => {
+        finalScoreElement.textContent = `Final Score: ${score}`;
+        finalHighScoreElement.textContent = `High Score: ${highScore}`;
+        gameOverElement.style.display = "flex";
+        
+        // Save high score
+        localStorage.setItem('heartGameHighScore', highScore);
+    }, 1000);
+}
+
+// Restart game
+function restartGame() {
+    // Hide game over screen
+    gameOverElement.style.display = "none";
+    
+    // Remove all hearts
+    const hearts = document.querySelectorAll(".heart");
+    hearts.forEach(heart => heart.remove());
+    
+    // Clear celebration
+    celebrationElement.innerHTML = "";
+    
+    // Reinitialize game
+    initGame();
+}
+
+// Initialize game when page loads
+window.onload = initGame;
+
+// Prevent right-click context menu
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Resize handling
+window.addEventListener('resize', function() {
+    if (!gameActive) return;
+    
+    // Remove hearts that are outside viewport
+    const hearts = document.querySelectorAll(".heart");
+    hearts.forEach(heart => {
+        const top = parseFloat(heart.style.top);
+        if (top > window.innerHeight || parseFloat(heart.style.left) > window.innerWidth) {
+            heart.remove();
+        }
+    });
+});
+</script>
+</body>
+</html>
