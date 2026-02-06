@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import random
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def fun_home(request):
     return render(request, 'funzone/home.html')
 
