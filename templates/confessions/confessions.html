@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>💌 Wishes Wall 💌</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Wish</button>
+</form>
+
+<hr>
+
+<div>
+    {% for wish in wishes %}
+        <div style="background:#ffe4f0; padding:15px; margin:10px; border-radius:15px;">
+            <p>{{ wish.message }}</p>
+            {% if wish.name %}
+                <small>— {{ wish.name }}</small>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No wishes yet 💔</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

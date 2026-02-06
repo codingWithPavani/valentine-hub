@@ -32,7 +32,7 @@ urlpatterns = [
     path('cards/', include('cards.urls')),
     path('funzone/', include('funzone.urls')),
     path('memory/', include('memorywall.urls')),
-    # path('confessions/', include('confessions.urls')),
+    path('confessions/', include('confessions.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

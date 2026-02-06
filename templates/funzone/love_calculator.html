@@ -661,6 +661,46 @@
     }
 
 
+/* FunZone Sub Header */
+
+.funzone-subheader {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 30px auto;
+    padding: 15px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 40px;
+    max-width: 800px;
+    box-shadow: 0 10px 25px rgba(255,111,174,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.funzone-subheader a {
+    text-decoration: none;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    color: #ff6fae;
+    background: white;
+    border: 2px solid #ffd1dc;
+    transition: 0.3s ease;
+    box-shadow: 0 6px 15px rgba(255,182,193,0.2);
+}
+
+.funzone-subheader a:hover {
+    background: linear-gradient(135deg,#ff6fae,#ff8fab);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Active Page */
+
+.funzone-subheader a.active {
+    background: linear-gradient(135deg,#ff6fae,#ff8fab);
+    color: white;
+    box-shadow: 0 10px 25px rgba(255,111,174,0.4);
+}
 
 
     </style>
@@ -679,10 +719,13 @@
             <!-- <a href="/accounts/dashboard/">📊 Dashboard</a>
             <a href="/cards/">💌 Create Card</a>
             <a href="/accounts/logout/">👋 Logout</a> -->
-            <a href="/funzone/love-calculator/">😊Love Calculator</a>
+            <!-- <a href="/funzone/love-calculator/">😊Love Calculator</a>
              <a href="/funzone/message-generator/">💬Sweet Message</a>
              <a href="/funzone/game/">❤️Game</a>
-             <a href="/accounts/logout/">👋 Logout</a> 
+             <a href="/accounts/logout/">👋 Logout</a>  -->
+                         <a href="/accounts/dashboard/">💌 Cards</a>
+            <a href="/funzone/">😉 Fun Zone</a>
+            <a href="/accounts/logout/">👋 Logout</a>x
 
         {% else %}
             <a href="/accounts/login/">🔑 Login</a>
@@ -690,6 +733,12 @@
         {% endif %}
     </nav>
 </header>
+
+<div class="funzone-subheader">
+    <a href="/funzone/message-generator/">💬 Sweet Messages</a>
+    <a href="/funzone/love-calculator/" class="active">💕 Love Calculator</a>
+    <a href="/funzone/game/">❤️ Game</a>
+</div>
 
 <div class="content">
     <!-- Welcome Message (shown via JS if authenticated) -->

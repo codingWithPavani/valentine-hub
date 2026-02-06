@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,7 +158,6 @@
         /* Content Area */
         .content {
             padding: 40px;
-             margin-top: -20px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
@@ -301,8 +299,8 @@
         <a href="/">🏠 Home</a>
 
         {% if user.is_authenticated %}
-            <a href="/accounts/dashboard/">💌 Cards</a>
-            <a href="/funzone/">😉 Fun Zone</a>
+            <a href="/accounts/dashboard/">📊 Dashboard</a>
+            <a href="/cards/">💌 Create Card</a>
             <a href="/accounts/logout/">👋 Logout</a>
         {% else %}
             <a href="/accounts/login/">🔑 Login</a>
@@ -319,6 +317,29 @@
     {% endblock %}
 </div>
 
+
+<h2>💌 Wishes Wall 💌</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Wish</button>
+</form>
+
+<hr>
+
+<div>
+    {% for wish in wishes %}
+        <div style="background:#ffe4f0; padding:15px; margin:10px; border-radius:15px;">
+            <p>{{ wish.message }}</p>
+            {% if wish.name %}
+                <small>— {{ wish.name }}</small>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No wishes yet 💔</p>
+    {% endfor %}
+</div>
 
 
 <footer>

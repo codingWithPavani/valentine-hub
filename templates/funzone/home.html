@@ -73,7 +73,7 @@
             box-shadow: 0 8px 32px rgba(255, 111, 174, 0.2);
             position: relative;
             z-index: 1000;
-            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         header::before {
@@ -167,6 +167,7 @@
         .content {
             padding: 40px;
             max-width: 1200px;
+             margin-top: -20px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -343,12 +344,22 @@
     }
     
     /* Fun Zone Cards Container */
-    .funzone-cards {
+    /* .funzone-cards {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 40px;
         margin-top: 30px;
-    }
+    } */
+
+    .funzone-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Forces 3 equal columns */
+    gap: 40px;
+    margin-top: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
     
     /* Individual Cards */
     .funzone-card {
@@ -540,10 +551,13 @@
             <!-- <a href="/accounts/dashboard/">📊 Dashboard</a>
             <a href="/cards/">💌 Create Card</a>
             <a href="/accounts/logout/">👋 Logout</a> -->
-            <a href="/funzone/love-calculator/">😊Love Calculator</a>
-            <a href="/funzone/message-generator/">💬Sweet Message</a>
+            <!-- <a href="/funzone/love-calculator/">😊Love Calculator</a>
+            <a href="/funzone/message-generator/">💬Sweet Message</a> -->
             <!-- <a href="/funzone/heart_ game">❤️Game</a> -->
-             <a href="/funzone/game/">❤️Game</a>
+             <!-- <a href="/funzone/game/">❤️Game</a> -->
+                          <a href="/accounts/dashboard/">💌 Cards</a>
+            <a href="/funzone/">😉 Fun Zone</a>
+            
                <a href="/accounts/logout/">👋 Logout</a> 
 
         {% else %}

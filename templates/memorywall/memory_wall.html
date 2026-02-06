@@ -293,30 +293,90 @@
         }
         
         /* Photo Grid Layout - Valentine Style */
-        .valentine-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-        
-        /* Valentine Photo Card */
-        .valentine-card {
-            position: relative;
-            border-radius: 25px;
-            overflow: hidden;
-            aspect-ratio: 1;
-            background: white;
-            box-shadow: 
-                0 15px 35px rgba(255, 111, 174, 0.15),
-                0 0 0 2px white,
-                0 0 0 4px #ffd1dc;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        
+ .valentine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px; /* Reduced gap for overlapping */
+    margin-top: 40px;
+    position: relative;
+}
+
+/* Add overlapping card styles */
+.valentine-card {
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: white;
+    box-shadow: 
+        0 15px 35px rgba(255, 111, 174, 0.15),
+        0 0 0 2px white,
+        0 0 0 4px #ffd1dc;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    /* Add these for overlap */
+    margin: 10px;
+    z-index: 1;
+}
+
+/* Add different positions for cards to create overlap effect */
+.valentine-card:nth-child(3n+1) {
+    transform: translate(-5px, -5px) rotate(-2deg);
+}
+
+.valentine-card:nth-child(3n+2) {
+    transform: translate(5px, 8px) rotate(3deg);
+    z-index: 2;
+}
+
+.valentine-card:nth-child(3n+3) {
+    transform: translate(-8px, 12px) rotate(-4deg);
+}
+
+.valentine-card:nth-child(4n+1) {
+    transform: translate(10px, -8px) rotate(5deg);
+}
+
+.valentine-card:nth-child(5n+2) {
+    transform: translate(-12px, 5px) rotate(-3deg);
+}
+
+.valentine-card:nth-child(6n+3) {
+    transform: translate(7px, -10px) rotate(2deg);
+}
+
+/* Hover effect with increased overlap */
+.valentine-card:hover {
+    transform: translateY(-12px) rotateY(5deg) rotateX(5deg) scale(1.05) !important;
+    z-index: 10 !important;
+    box-shadow: 
+        0 25px 50px rgba(255, 111, 174, 0.25),
+        0 0 0 2px white,
+        0 0 0 4px #ff6fae,
+        0 0 30px rgba(255, 111, 174, 0.3);
+}
+
+/* Add a subtle shadow behind for depth */
+.valentine-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: -10px;
+    bottom: -10px;
+    background: rgba(255, 111, 174, 0.1);
+    border-radius: 25px;
+    z-index: -1;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.valentine-card:hover::after {
+    opacity: 0.8;
+    transform: translate(5px, 5px);
+}
         .valentine-card:hover {
             transform: translateY(-12px) rotateY(5deg) rotateX(5deg);
             box-shadow: 
@@ -356,15 +416,16 @@
         }
         
         /* Photo Image */
-        .photo-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-            position: relative;
-            z-index: 1;
-        }
-        
+.photo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    position: relative;
+    z-index: 1;
+    border: 3px solid white;
+    box-sizing: border-box;
+}
         .valentine-card:hover .photo-image {
             transform: scale(1.08);
         }
@@ -839,6 +900,119 @@
             transform: scale(1.1) rotate(15deg);
             box-shadow: 0 12px 25px rgba(255, 111, 174, 0.4);
         }
+        #valentineGrid{
+            background-color: pink;
+            padding: 70px;
+            border-radius: 20px;
+        }
+
+
+
+
+        /* Add these to your existing media queries section */
+
+@media (max-width: 768px) {
+    /* ... your existing mobile styles ... */
+    
+    /* Fix overlapping for tablets */
+    .valentine-card {
+        margin: 5px !important;
+        transform: none !important;
+    }
+    
+    /* Reduce overlap effect on mobile */
+    .valentine-card:nth-child(3n+1),
+    .valentine-card:nth-child(3n+2),
+    .valentine-card:nth-child(3n+3),
+    .valentine-card:nth-child(4n+1),
+    .valentine-card:nth-child(5n+2),
+    .valentine-card:nth-child(6n+3) {
+        transform: none !important;
+    }
+    
+    /* Remove the ::after shadow on mobile */
+    .valentine-card::after {
+        display: none;
+    }
+    
+    /* Simplify hover effect for mobile */
+    .valentine-card:hover {
+        transform: translateY(-8px) scale(1.03) !important;
+    }
+    
+    /* Make overlay visible by default on mobile (for touch) */
+    .photo-overlay {
+        transform: translateY(0) !important;
+        opacity: 0.9;
+        background: linear-gradient(to top, rgba(255, 111, 174, 0.95) 0%, rgba(255, 111, 174, 0.7) 100%);
+    }
+    
+    /* Show floating hearts by default on mobile */
+    .heart-float {
+        opacity: 0.3 !important;
+        font-size: 20px !important;
+    }
+    
+    /* Reduce grid gap on mobile */
+    .valentine-grid {
+        gap: 10px !important;
+    }
+    
+    /* Adjust card hover shadow */
+    .valentine-card:hover {
+        box-shadow: 
+            0 15px 30px rgba(255, 111, 174, 0.2),
+            0 0 0 2px white,
+            0 0 0 3px #ff6fae !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ... your existing small mobile styles ... */
+    
+    /* Further simplify for very small screens */
+    .valentine-card {
+        margin: 3px !important;
+    }
+    
+    /* Remove 3D effects on mobile */
+    .valentine-card:hover {
+        transform: translateY(-5px) !important;
+        transform-style: flat !important;
+        perspective: none !important;
+    }
+    
+    /* Make images easier to tap */
+    .photo-image {
+        border: 2px solid white;
+    }
+    
+    /* Adjust grid for single column */
+    .valentine-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        margin: 20px auto !important;
+    }
+    
+    /* Center cards in single column */
+    .valentine-card {
+        max-width: 300px !important;
+        margin: 0 auto 15px !important;
+        display: block !important;
+    }
+    
+    /* Remove all transform effects */
+    .valentine-card {
+        transform: none !important;
+    }
+    
+    /* Ensure proper touch targets */
+    .valentine-card,
+    .photo-image {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+}
     </style>
 </head>
 <body>
@@ -906,10 +1080,10 @@
                     <div class="photo-overlay">
                         <h4 class="photo-title">{{ memory.title }}</h4>
                         <p class="photo-description">{{ memory.description|truncatechars:80 }}</p>
-                        <div class="photo-date">
+                        <!-- <div class="photo-date">
                             <span>📅</span>
                             <span>Special Moment</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 {% empty %}
@@ -1164,6 +1338,166 @@
                 }, 10);
             });
         });
+
+
+
+
+        // Function to create beautiful overlapping effect
+// Mobile-friendly overlapping effect
+function createOverlapEffect() {
+    const cards = document.querySelectorAll('.valentine-card');
+    
+    // Check if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    // Skip overlap effect on mobile
+    if (isMobile) {
+        cards.forEach(card => {
+            // Reset any transforms
+            card.style.transform = 'none';
+            card.style.zIndex = '1';
+            
+            // Make overlay visible on mobile
+            const overlay = card.querySelector('.photo-overlay');
+            if (overlay) {
+                overlay.style.transform = 'translateY(0)';
+                overlay.style.opacity = '0.9';
+            }
+            
+            // Show floating hearts with less opacity
+            const floatingHearts = card.querySelectorAll('.heart-float');
+            floatingHearts.forEach(heart => {
+                heart.style.opacity = '0.3';
+                heart.style.fontSize = '20px';
+            });
+        });
+        return; // Exit function for mobile
+    }
+    
+    // Desktop overlapping effect
+    const maxOffset = 15;
+    const maxRotation = 8;
+    
+    cards.forEach((card, index) => {
+        if (card.closest('.empty-memories')) return;
+        
+        card.style.transform = '';
+        
+        const offsetX = (Math.random() * maxOffset * 2) - maxOffset;
+        const offsetY = (Math.random() * maxOffset * 2) - maxOffset;
+        const rotation = (Math.random() * maxRotation * 2) - maxRotation;
+        
+        card.style.transition = 'transform 0.5s ease, z-index 0.3s ease';
+        card.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
+        card.style.zIndex = Math.floor(Math.random() * 5) + 1;
+        
+        card.dataset.originalTransform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
+        card.dataset.originalZIndex = card.style.zIndex;
+        
+        card.addEventListener('mouseenter', function() {
+            this.style.zIndex = '100';
+            const originalTransform = this.dataset.originalTransform || '';
+            this.style.transform = originalTransform + ' translateY(-15px) scale(1.05)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.zIndex = this.dataset.originalZIndex || '1';
+            this.style.transform = this.dataset.originalTransform || '';
+        });
+    });
+}
+
+// Handle window resize
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(createOverlapEffect, 250);
+});
+
+// Initialize overlap effect
+document.addEventListener('DOMContentLoaded', function() {
+    // ... your existing code ...
+    
+    // Create overlap effect after cards load
+    setTimeout(createOverlapEffect, 300);
+});
+
+
+// Add touch support for mobile
+document.addEventListener('DOMContentLoaded', function() {
+    // ... your existing code ...
+    
+    // Mobile touch effects
+    const cards = document.querySelectorAll('.valentine-card');
+    
+    cards.forEach(card => {
+        let touchStartTime;
+        let touchStartX, touchStartY;
+        
+        card.addEventListener('touchstart', function(e) {
+            touchStartTime = Date.now();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            
+            // Visual feedback on touch
+            this.style.transition = 'all 0.2s ease';
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        card.addEventListener('touchend', function(e) {
+            const touchDuration = Date.now() - touchStartTime;
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = Math.abs(touchEndX - touchStartX);
+            const deltaY = Math.abs(touchEndY - touchStartY);
+            
+            // Only trigger click if it's a tap (not a swipe)
+            if (touchDuration < 300 && deltaX < 10 && deltaY < 10) {
+                // Remove scale effect
+                this.style.transform = 'scale(1)';
+                
+                // Add ripple effect for touch feedback
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'rgba(255, 111, 174, 0.3)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.width = '0';
+                ripple.style.height = '0';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.zIndex = '5';
+                this.appendChild(ripple);
+                
+                // Animate ripple
+                setTimeout(() => {
+                    ripple.style.transition = 'all 0.6s ease';
+                    ripple.style.width = '200px';
+                    ripple.style.height = '200px';
+                    ripple.style.opacity = '0';
+                }, 10);
+                
+                // Remove ripple after animation
+                setTimeout(() => {
+                    if (ripple.parentNode) {
+                        ripple.parentNode.removeChild(ripple);
+                    }
+                }, 700);
+            } else {
+                // Reset if it was a swipe
+                this.style.transform = '';
+            }
+        });
+        
+        // Reset if touch is cancelled
+        card.addEventListener('touchcancel', function() {
+            this.style.transform = '';
+        });
+    });
+    
+    // Initialize overlap effect
+    setTimeout(createOverlapEffect, 300);
+});
     </script>
 </body>
 </html>
