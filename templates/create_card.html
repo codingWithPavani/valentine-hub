@@ -1,32 +1,604 @@
 <head>
-<title>Create Valentine Card</title>
+<title>Create Valentine Card | Valentine World</title>
 <style>
-body{
-    background:#ffe6f0;
-    font-family: Arial;
-    text-align:center;
-}
-.form-box{
-    background:rgb(191, 137, 164);
-    width:400px;
-    height: 400px;
-    margin:80px auto;
-    padding:30px;
-    border-radius:20px;
-}
-input, textarea{
-    width:90%;
-    padding:10px;
-    margin:10px;
-    border-radius:10px;
-    border:1px solid #ccc;
-}
-button{
-    background:#ff9acb;
-    border:none;
-    padding:12px 20px;
-    border-radius:20px;
-}
+    /* Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #fff0f5 0%, #fff9fb 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Animated Hearts Background */
+    .hearts-bg {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .heart {
+        position: absolute;
+        color: rgba(255, 182, 193, 0.15);
+        font-size: 24px;
+        animation: floatHearts 20s linear infinite;
+        filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.3));
+    }
+
+    @keyframes floatHearts {
+        0% {
+            transform: translateY(110vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.4;
+        }
+        90% {
+            opacity: 0.4;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Header Styles (Kept Same) */
+    header {
+        background: linear-gradient(90deg, #ff6fae 0%, #ffafbd 50%, #ffc3a0 100%);
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 8px 32px rgba(255, 111, 174, 0.2);
+        position: relative;
+        z-index: 1000;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, 
+            #ff6fae, #ff8fab, #ffafbd, #ffc3a0,
+            #ff6fae, #ff8fab, #ffafbd, #ffc3a0);
+        background-size: 400% 400%;
+        animation: shimmer 8s ease infinite;
+    }
+
+    @keyframes shimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .logo {
+        font-size: 28px;
+        font-weight: 800;
+        background: linear-gradient(45deg, #fff, #ffebf0);
+        color: transparent;
+        display: inline-block;
+        -webkit-background-clip: text;
+        background-clip: text;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        text-shadow: none;
+    }
+
+    nav {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 50px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    nav a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: 0.5s;
+    }
+
+    nav a:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    nav a:hover::before {
+        left: 100%;
+    }
+
+    nav a[href*="{{ request.path }}"] {
+        background: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Main Content */
+    .content {
+        padding: 40px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Form Container */
+    .form-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    /* Enhanced Form Box */
+    .form-box {
+        background: linear-gradient(145deg, 
+            rgba(255, 255, 255, 0.95) 0%, 
+            rgba(255, 240, 245, 0.95) 100%);
+        border-radius: 30px;
+        padding: 60px 50px;
+        box-shadow: 
+            0 30px 80px rgba(255, 111, 174, 0.15),
+            inset 0 0 100px rgba(255, 182, 193, 0.1);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        transform-style: preserve-3d;
+        transform: translateY(0);
+        transition: transform 0.5s ease;
+    }
+
+    .form-box:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Form Border Effects */
+    .form-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, 
+            #ff6b9d, #ff8fab, #ffb3c1, #ff8fab, #ff6b9d);
+        background-size: 200% 100%;
+        animation: borderFlow 3s linear infinite;
+    }
+
+    @keyframes borderFlow {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 200% 0%; }
+    }
+
+    /* Form Inner Glow */
+    .form-box::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 1px solid rgba(255, 182, 193, 0.3);
+        border-radius: 25px;
+        pointer-events: none;
+        box-shadow: 
+            inset 0 0 50px rgba(255, 182, 193, 0.1),
+            0 0 30px rgba(255, 182, 193, 0.1);
+    }
+
+    /* Form Header */
+    .form-header {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .form-title {
+        color: #ff6b9d;
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+        text-shadow: 
+            3px 3px 0 rgba(255, 182, 193, 0.3),
+            6px 6px 0 rgba(255, 182, 193, 0.1);
+        letter-spacing: 1px;
+    }
+
+    .title-hearts {
+        display: inline-block;
+        animation: heartBeat 2s infinite;
+        filter: drop-shadow(0 0 10px rgba(255, 182, 193, 0.5));
+    }
+
+    @keyframes heartBeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .form-subtitle {
+        color: #7a5c7c;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-top: 10px;
+        opacity: 0.9;
+    }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .form-input-wrapper {
+        position: relative;
+    }
+
+    .form-input-wrapper::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        z-index: 2;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 18px 20px 18px 50px;
+        border: 2px solid rgba(255, 182, 193, 0.3);
+        border-radius: 15px;
+        font-size: 1.1rem;
+        color: #5a3d5c;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        box-shadow: 
+            inset 0 2px 10px rgba(255, 182, 193, 0.1),
+            0 5px 20px rgba(255, 182, 193, 0.1);
+        position: relative;
+        z-index: 1;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    textarea {
+        padding: 20px 20px 20px 50px;
+        min-height: 150px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    input:focus, textarea:focus {
+        outline: none;
+        border-color: #ff8fab;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 
+            inset 0 2px 15px rgba(255, 182, 193, 0.2),
+            0 8px 25px rgba(255, 182, 193, 0.2),
+            0 0 0 3px rgba(255, 182, 193, 0.1);
+        transform: translateY(-2px);
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: rgba(122, 92, 124, 0.6);
+        font-weight: 500;
+    }
+
+    /* Input Icons */
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.3rem;
+        color: #ff8fab;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .form-group:nth-child(1) .input-icon::before { content: '👤'; }
+    .form-group:nth-child(2) .input-icon::before { content: '💘'; }
+    .form-group:nth-child(3) .input-icon::before { content: '💌'; }
+
+    /* Form Button */
+    .form-button-container {
+        text-align: center;
+        margin-top: 40px;
+        position: relative;
+    }
+
+    .form-btn {
+        background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+        border: none;
+        padding: 20px 45px;
+        border-radius: 50px;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 
+            0 15px 35px rgba(255, 107, 157, 0.3),
+            0 0 0 4px rgba(255, 255, 255, 0.8),
+            inset 0 0 25px rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 1px;
+        min-width: 220px;
+        justify-content: center;
+    }
+
+    .form-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        transition: 0.6s;
+        z-index: 1;
+    }
+
+    .form-btn:hover {
+        background: linear-gradient(135deg, #ff558f 0%, #ff7a9e 100%);
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 
+            0 25px 50px rgba(255, 107, 157, 0.4),
+            0 0 0 4px rgba(255, 255, 255, 0.9),
+            inset 0 0 30px rgba(255, 255, 255, 0.4);
+    }
+
+    .form-btn:hover::before {
+        left: 100%;
+    }
+
+    .form-btn:active {
+        transform: translateY(-2px) scale(1.02);
+    }
+
+    .btn-icon {
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-btn:hover .btn-icon {
+        transform: rotate(15deg) scale(1.2);
+    }
+
+    .btn-text {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Decorative Hearts */
+    .decorative-hearts {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .decorative-heart {
+        position: absolute;
+        color: rgba(255, 182, 193, 0.1);
+        font-size: 30px;
+        animation: floatAround 8s linear infinite;
+    }
+
+    @keyframes floatAround {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.3;
+        }
+        90% {
+            opacity: 0.3;
+        }
+        100% {
+            transform: translate(var(--tx, 100px), var(--ty, 100px)) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Form Tips */
+    .form-tips {
+        margin-top: 30px;
+        text-align: center;
+        color: #7a5c7c;
+        font-size: 0.95rem;
+        opacity: 0.8;
+        font-style: italic;
+    }
+
+    /* Footer Styles (Kept Same) */
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: #ff8fab;
+        font-size: 14px;
+        border-top: 2px solid #ffd1dc;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        header {
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            padding: 8px 16px;
+        }
+        
+        nav {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        nav a {
+            padding: 10px 18px;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 20px 15px;
+        }
+        
+        .form-box {
+            padding: 40px 30px;
+        }
+        
+        .form-title {
+            font-size: 2.2rem;
+        }
+        
+        input, textarea {
+            padding: 16px 20px 16px 45px;
+            font-size: 1rem;
+        }
+        
+        .form-btn {
+            padding: 18px 35px;
+            font-size: 1.2rem;
+            min-width: 200px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo {
+            font-size: 20px;
+        }
+        
+        nav a {
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+        
+        .form-box {
+            padding: 30px 20px;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+        }
+        
+        input, textarea {
+            padding: 14px 15px 14px 40px;
+            font-size: 0.95rem;
+        }
+        
+        .input-icon {
+            font-size: 1.1rem;
+            left: 12px;
+        }
+        
+        .form-btn {
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            min-width: 180px;
+        }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #fff0f5;
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+        border-radius: 5px;
+        border: 2px solid #fff0f5;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #ff558f, #ff7a9e);
+    }
+
+    /* Form Animation */
+    @keyframes formLoad {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .form-box {
+        animation: formLoad 0.8s ease-out;
+    }
 </style>
 </head>
 
@@ -34,18 +606,204 @@ button{
 
 {% block content %}
 
-<div class="form-box">
-<h2>💌 Create Your Valentine Card</h2>
+<!-- Animated Hearts Background -->
+<div class="hearts-bg" id="heartsBg"></div>
 
-<form method="POST">
-{% csrf_token %}
-<input type="text" name="sender" placeholder="Your Name" required>
-<input type="text" name="receiver" placeholder="Valentine's Name" required>
-
-<textarea name="message" placeholder="Write your love message ❤️" required></textarea>
-
-<button>Create Card 💖</button>
-</form>
+<div class="content">
+    <div class="form-container">
+        <div class="form-box">
+            <!-- Decorative Hearts -->
+            <div class="decorative-hearts" id="decorativeHearts"></div>
+            
+            <!-- Form Header -->
+            <div class="form-header">
+                <h1 class="form-title">
+                    <span class="title-hearts">💌</span>
+                    Create Your Valentine Card
+                    <span class="title-hearts">💖</span>
+                </h1>
+                <p class="form-subtitle">Share your love with a beautiful personalized message</p>
+            </div>
+            
+            <!-- Form -->
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <div class="form-input-wrapper">
+                        <span class="input-icon"></span>
+                        <input type="text" name="sender" placeholder="Your Name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-input-wrapper">
+                        <span class="input-icon"></span>
+                        <input type="text" name="receiver" placeholder="Your Valentine's Name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-input-wrapper">
+                        <span class="input-icon"></span>
+                        <textarea name="message" placeholder="Write your heartfelt love message here... ❤️" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-button-container">
+                    <button type="submit" class="form-btn">
+                        <span class="btn-text">Create Beautiful Card</span>
+                        <span class="btn-icon">💝</span>
+                    </button>
+                </div>
+                
+                <div class="form-tips">
+                    💡 Tip: Be sincere and speak from your heart for the most beautiful message!
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Create animated floating hearts
+    document.addEventListener('DOMContentLoaded', function() {
+        const heartsBg = document.getElementById('heartsBg');
+        const decorativeHearts = document.getElementById('decorativeHearts');
+        const heartCount = 25;
+        
+        // Background hearts
+        for (let i = 0; i < heartCount; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = Math.random() > 0.5 ? '❤' : '💖';
+            
+            const size = Math.random() * 25 + 15;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * 15 + 20;
+            
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${left}%`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.filter = `hue-rotate(${Math.random() * 60}deg)`;
+            
+            heartsBg.appendChild(heart);
+        }
+        
+        // Decorative hearts around form
+        for (let i = 0; i < 8; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'decorative-heart';
+            heart.innerHTML = '💖';
+            
+            const size = Math.random() * 20 + 10;
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 8 + 6;
+            const tx = Math.random() * 100 - 50;
+            const ty = Math.random() * 100 - 50;
+            
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${left}%`;
+            heart.style.top = `${top}%`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.setProperty('--tx', `${tx}px`);
+            heart.style.setProperty('--ty', `${ty}px`);
+            heart.style.filter = `blur(${Math.random() * 3}px)`;
+            
+            decorativeHearts.appendChild(heart);
+        }
+        
+        // Add focus effects to form inputs
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+            
+            // Add character counter for message
+            if (input.tagName === 'TEXTAREA') {
+                const counter = document.createElement('div');
+                counter.className = 'char-counter';
+                counter.style.cssText = `
+                    position: absolute;
+                    bottom: -25px;
+                    right: 0;
+                    font-size: 0.8rem;
+                    color: #ff8fab;
+                    opacity: 0.7;
+                    transition: opacity 0.3s ease;
+                `;
+                counter.textContent = '0/500';
+                
+                input.parentElement.style.position = 'relative';
+                input.parentElement.appendChild(counter);
+                
+                input.addEventListener('input', function() {
+                    const length = this.value.length;
+                    counter.textContent = `${length}/500`;
+                    counter.style.opacity = length > 0 ? '1' : '0.7';
+                    
+                    if (length > 450) {
+                        counter.style.color = '#ff6b9d';
+                        counter.style.fontWeight = 'bold';
+                    } else {
+                        counter.style.color = '#ff8fab';
+                        counter.style.fontWeight = 'normal';
+                    }
+                });
+            }
+        });
+        
+        // Add form submission animation
+        const form = document.querySelector('form');
+        const submitBtn = document.querySelector('.form-btn');
+        
+        form.addEventListener('submit', function(e) {
+            // Only show animation if form is valid
+            if (this.checkValidity()) {
+                submitBtn.innerHTML = `
+                    <span class="btn-text">Creating Card...</span>
+                    <span class="btn-icon" style="animation: spin 1s linear infinite">✨</span>
+                `;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.8';
+                
+                // Add spinning animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+        
+        // Add current page indicator
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname;
+            if (currentPath === linkPath || 
+                (currentPath === '/' && linkPath === '/') ||
+                (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                link.style.background = 'rgba(255, 255, 255, 0.4)';
+                link.style.boxShadow = '0 4px 15px rgba(255, 255, 255, 0.3)';
+                link.style.transform = 'scale(1.05)';
+            }
+        });
+    });
+</script>
 
 {% endblock %}

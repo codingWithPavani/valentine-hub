@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-9w33a51kwx6gc0!49q-+wx$*6%_9-!wgs-7(5%=0bms!5&5^3(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 
@@ -86,6 +87,11 @@ WSGI_APPLICATION = 'valentine_site.wsgi.application'
 #     }
 # }
 
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse("postgresql://valentine_db_v94s_user:YUExzNlI9Tgod0nBI1qpabj6F1qiNkB6@dpg-d630jrkoud1c73d8taqg-a/valentine_db_v94s")
+}
 
 
 DATABASES = {
