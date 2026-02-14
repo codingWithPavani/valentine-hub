@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def memory_wall(request):
-    memories = Memory.objects.all().order_by('-created_at')
+    memories = Memory.objects.filter(user=request.user)
     return render(request, 'memorywall/memory_wall.html', {'memories': memories})
 
 

@@ -93,23 +93,23 @@ WSGI_APPLICATION = 'valentine_site.wsgi.application'
 #     'default': dj_database_url.parse("postgresql://valentine_db_v94s_user:YUExzNlI9Tgod0nBI1qpabj6F1qiNkB6@dpg-d630jrkoud1c73d8taqg-a/valentine_db_v94s")
 # }
 
-import dj_database_url
-import os
-
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-}
+# import dj_database_url
+# import os
 
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'valentine_db',
-#         'USER': 'postgres',
-#         'PASSWORD': 'pawany12',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'valentine_db',
+        'USER': 'postgres',
+        'PASSWORD': 'pawany12',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
