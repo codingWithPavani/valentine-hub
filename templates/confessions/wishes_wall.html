@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,21 +31,22 @@
 
         .heart {
             position: absolute;
-            color: rgba(255, 182, 193, 0.1);
+            color: rgba(255, 182, 193, 0.15);
             font-size: 20px;
             animation: floatHearts 25s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.2));
         }
 
         @keyframes floatHearts {
             0% {
-                transform: translateY(100vh) rotate(0deg);
+                transform: translateY(110vh) rotate(0deg);
                 opacity: 0;
             }
             10% {
-                opacity: 0.1;
+                opacity: 0.2;
             }
             90% {
-                opacity: 0.1;
+                opacity: 0.2;
             }
             100% {
                 transform: translateY(-100px) rotate(360deg);
@@ -55,7 +54,7 @@
             }
         }
 
-        /* Enhanced Header */
+        /* Enhanced Header - Kept Same */
         header {
             background: linear-gradient(90deg, #ff6fae 0%, #ffafbd 50%, #ffc3a0 100%);
             padding: 20px 40px;
@@ -88,21 +87,21 @@
         }
 
         /* Logo Styling */
- .logo {
-    font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(45deg, #fff, #ffebf0);
-    color: transparent;
-    display: inline-block;
-    -webkit-background-clip: text;
-    background-clip: text;
-    padding: 10px 20px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    text-shadow: none;
-}
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #ffebf0);
+            color: transparent;
+            display: inline-block;
+            -webkit-background-clip: text;
+            background-clip: text;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-shadow: none;
+        }
 
         /* Navigation Styling */
         nav {
@@ -149,22 +148,22 @@
             left: 100%;
         }
 
-        /* Active State for Current Page */
         nav a[href*="{{ request.path }}"] {
             background: rgba(255, 255, 255, 0.4);
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Content Area */
+        /* Enhanced Content Area */
         .content {
             padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            min-height: calc(100vh - 200px);
         }
 
-        /* Welcome Message for Authenticated Users */
+        /* Welcome Message */
         .welcome-user {
             background: linear-gradient(135deg, #fff, #fff9fb);
             border-radius: 20px;
@@ -173,7 +172,7 @@
             box-shadow: 0 10px 30px rgba(255, 182, 193, 0.15);
             border: 2px solid #ffd1dc;
             text-align: center;
-            display: none; /* Hidden by default, shown via JS if authenticated */
+            display: none;
         }
 
         .welcome-user.show {
@@ -192,7 +191,301 @@
             }
         }
 
-        /* Footer */
+        /* Wishes Wall Header */
+        .wishes-header {
+            text-align: center;
+            margin: 40px 0 50px;
+            position: relative;
+        }
+
+        .wishes-header h2 {
+            color: #ff6fae;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 0 rgba(255, 182, 193, 0.3);
+            display: inline-block;
+            position: relative;
+            padding: 0 50px;
+        }
+
+        .wishes-header h2::before,
+        .wishes-header h2::after {
+            content: '💌';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .wishes-header h2::before {
+            left: 0;
+        }
+
+        .wishes-header h2::after {
+            right: 0;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-70%) scale(1.2); }
+        }
+
+        .wishes-header p {
+            color: #7a5c7c;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Form */
+        .wish-form-container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 245, 0.9));
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            box-shadow: 
+                0 20px 50px rgba(255, 111, 174, 0.15),
+                inset 0 0 30px rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .wish-form-container h3 {
+            color: #ff6fae;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .wish-form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Style form fields (applies to {{ form.as_p }}) */
+        .wish-form-container form p {
+            margin: 0;
+            position: relative;
+        }
+
+        .wish-form-container form label {
+            display: block;
+            color: #7a5c7c;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .wish-form-container form input,
+        .wish-form-container form textarea,
+        .wish-form-container form select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 209, 220, 0.5);
+            border-radius: 15px;
+            font-size: 1rem;
+            color: #5a3d5c;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .wish-form-container form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .wish-form-container form input:focus,
+        .wish-form-container form textarea:focus,
+        .wish-form-container form select:focus {
+            outline: none;
+            border-color: #ff9acb;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                inset 0 2px 10px rgba(255, 111, 174, 0.1),
+                0 5px 20px rgba(255, 111, 174, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .wish-form-container form input::placeholder,
+        .wish-form-container form textarea::placeholder {
+            color: #a88a9a;
+            opacity: 0.7;
+        }
+
+        /* Enhanced Submit Button */
+        .wish-form-container form button {
+            background: linear-gradient(135deg, #ff6fae 0%, #ff8fab 100%);
+            border: none;
+            padding: 18px 35px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 
+                0 10px 30px rgba(255, 111, 174, 0.3),
+                0 0 0 3px rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .wish-form-container form button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
+        }
+
+        .wish-form-container form button:hover {
+            background: linear-gradient(135deg, #ff5ca0 0%, #ff7a9e 100%);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 15px 40px rgba(255, 111, 174, 0.4),
+                0 0 0 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .wish-form-container form button:hover::before {
+            left: 100%;
+        }
+
+        .wish-form-container form button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Wishes Display Section */
+        .wishes-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        /* Individual Wish Card */
+        .wish-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 245, 0.9));
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 209, 220, 0.6);
+            box-shadow: 
+                0 10px 30px rgba(255, 111, 174, 0.1),
+                inset 0 0 30px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wish-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 50px rgba(255, 111, 174, 0.2),
+                inset 0 0 30px rgba(255, 255, 255, 0.5);
+            border-color: #ff9acb;
+        }
+
+        .wish-card::before {
+            content: '💌';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 4rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        .wish-message {
+            color: #5a3d5c;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            padding: 0 5px;
+        }
+
+        .wish-message::before {
+            content: '"';
+            color: #ffafbd;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        .wish-message::after {
+            content: '"';
+            color: #ffafbd;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        .wish-author {
+            color: #ff6fae;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: right;
+            border-top: 2px dashed rgba(255, 209, 220, 0.5);
+            padding-top: 15px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .wish-author::before {
+            content: '—';
+            color: #ffafbd;
+            font-size: 1.2rem;
+        }
+
+        /* Empty State */
+        .empty-wishes {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            border: 2px dashed #ffd1dc;
+        }
+
+        .empty-wishes p {
+            color: #7a5c7c;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-wishes .heart-icon {
+            font-size: 4rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Footer - Kept Same */
         footer {
             text-align: center;
             padding: 30px;
@@ -230,6 +523,24 @@
             .content {
                 padding: 20px;
             }
+            
+            .wishes-header h2 {
+                font-size: 2.5rem;
+                padding: 0 30px;
+            }
+            
+            .wishes-header h2::before,
+            .wishes-header h2::after {
+                font-size: 1.8rem;
+            }
+            
+            .wish-form-container {
+                padding: 30px 20px;
+            }
+            
+            .wishes-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -242,8 +553,17 @@
                 font-size: 13px;
             }
             
-            nav {
-                gap: 10px;
+            .wishes-header h2 {
+                font-size: 2rem;
+                padding: 0 20px;
+            }
+            
+            .wish-form-container {
+                padding: 25px 15px;
+            }
+            
+            .wish-card {
+                padding: 20px;
             }
         }
 
@@ -273,22 +593,25 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(#ff6fae, #ffafbd);
+            background: linear-gradient(135deg, #ff6fae, #ffafbd);
             border-radius: 5px;
+            border: 2px solid #ffe4ec;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(#ff5ca0, #ff8fab);
+            background: linear-gradient(135deg, #ff5ca0, #ff8fab);
         }
 
+        /* Form error styling */
+        .errorlist {
+            color: #ff4d4d;
+            list-style: none;
+            padding: 5px 0;
+            font-size: 0.9rem;
+        }
     </style>
-
-
-
 </head>
 <body>
-  
-
 
 <!-- Animated Hearts Background -->
 <div class="hearts-bg" id="heartsBg"></div>
@@ -297,7 +620,6 @@
     <div class="logo">💖 Valentine World</div>
     <nav>
         <a href="/">🏠 Home</a>
-
         {% if user.is_authenticated %}
             <a href="/accounts/dashboard/">📊 Dashboard</a>
             <a href="/cards/">💌 Create Card</a>
@@ -309,65 +631,73 @@
     </nav>
 </header>
 
-
 <div class="content">
-
+    <!-- Wishes Wall Header -->
+    <div class="wishes-header">
+        <h2>💌 Wishes Wall 💌</h2>
+        <p>Share your love and spread happiness with heartfelt messages</p>
+    </div>
     
-    {% block content %}
-    {% endblock %}
-</div>
+    <!-- Wish Form Container -->
+    <div class="wish-form-container">
+        <h3>Leave Your Wish</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">✨ Send Love ✨</button>
+        </form>
+    </div>
 
-
-<h2>💌 Wishes Wall 💌</h2>
-
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Wish</button>
-</form>
-
-<hr>
-
-<div>
-    {% for wish in wishes %}
-        <div style="background:#ffe4f0; padding:15px; margin:10px; border-radius:15px;">
-            <p>{{ wish.message }}</p>
-            {% if wish.name %}
-                <small>— {{ wish.name }}</small>
-            {% endif %}
+    <!-- Wishes Display -->
+    <div class="wishes-container">
+        <div class="wishes-grid">
+            {% for wish in wishes %}
+                <div class="wish-card">
+                    <div class="wish-message">{{ wish.message }}</div>
+                    {% if wish.name %}
+                        <div class="wish-author">{{ wish.name }}</div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="empty-wishes" style="grid-column: 1/-1;">
+                    <div class="heart-icon">💔</div>
+                    <p>No wishes yet 💔</p>
+                    <p style="font-size: 1rem; opacity: 0.7;">Be the first to share your love!</p>
+                </div>
+            {% endfor %}
         </div>
-    {% empty %}
-        <p>No wishes yet 💔</p>
-    {% endfor %}
+    </div>
 </div>
-
 
 <footer>
     Made with 💖 for Valentine's Day | © 2024 Valentine World
 </footer>
 
 <script>
-    
     // Create animated floating hearts
     document.addEventListener('DOMContentLoaded', function() {
         const heartsBg = document.getElementById('heartsBg');
-        const heartCount = 25;
+        const heartCount = 30;
+        const heartTypes = ['❤', '💖', '💕', '💗', '💓'];
         
         for (let i = 0; i < heartCount; i++) {
             const heart = document.createElement('div');
             heart.className = 'heart';
-            heart.innerHTML = '❤';
+            heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
             
-            // Random properties
-            const size = Math.random() * 25 + 15;
+            // Random properties for natural look
+            const size = Math.random() * 30 + 15;
             const left = Math.random() * 100;
-            const delay = Math.random() * 5;
-            const duration = Math.random() * 20 + 20;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * 15 + 20;
+            const opacity = Math.random() * 0.2 + 0.1;
             
             heart.style.fontSize = `${size}px`;
             heart.style.left = `${left}%`;
             heart.style.animationDelay = `${delay}s`;
             heart.style.animationDuration = `${duration}s`;
+            heart.style.opacity = opacity;
+            heart.style.filter = `hue-rotate(${Math.random() * 60}deg)`;
             
             heartsBg.appendChild(heart);
         }
@@ -400,12 +730,12 @@
         // Add hover effect to logo
         const logo = document.querySelector('.logo');
         logo.addEventListener('mouseenter', () => {
-            logo.style.transform = 'scale(1.05)';
+            logo.style.transform = 'scale(1.05) rotate(-2deg)';
             logo.style.transition = 'transform 0.3s ease';
         });
         
         logo.addEventListener('mouseleave', () => {
-            logo.style.transform = 'scale(1)';
+            logo.style.transform = 'scale(1) rotate(0deg)';
         });
         
         // Add click animation to nav links
@@ -417,12 +747,33 @@
                 }, 200);
             });
         });
+        
+        // Form submission animation
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                if (submitBtn && this.checkValidity()) {
+                    submitBtn.innerHTML = '✨ Sending... ✨';
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.8';
+                }
+            });
+        }
+        
+        // Add hover effect to wish cards
+        const wishCards = document.querySelectorAll('.wish-card');
+        wishCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
     });
 </script>
 
-
-
-
 </body>
-
 </html>
